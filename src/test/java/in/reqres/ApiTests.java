@@ -1,5 +1,8 @@
 package in.reqres;
 
+import in.reqres.models.pojo.PojoNameLastNameResponse;
+import in.reqres.models.pojo.PojoUserRequest;
+import in.reqres.models.pojo.PojoUserResponse;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,19 +13,19 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class ApiTests {
 
     @Test
     public void createUserAndCheckNameAndJob() {
-        String name = "John";
-        String job = "QA";
-        String body = format("{ \"name\": \"%s\", " +
-                "\"job\": \"%s\" }", name, job);
 
-        given()
+
+        PojoUserRequest body = new PojoUserRequest();
+        body.setName("John");
+        body.setJob("QA");
+        PojoUserResponse response = given()
                 .contentType(JSON)
                 .body(body)
                 .log().all()
@@ -30,21 +33,30 @@ public class ApiTests {
                 .post("https://reqres.in/api/users")
                 .then()
                 .statusCode(201)
-                .body("name", is(name))
-                .body("job", is(job));
+                .extract()
+                .as(PojoUserResponse.class);
+
+        assertThat(response.getName()).isEqualTo(body.getName());
+        assertThat(response.getJob()).isEqualTo(body.getJob());
     }
 
     @Test
     public void checkUserLastNameAndFirstNameAndId() {
 
-        given()
+        PojoNameLastNameResponse response = given()
                 .when()
                 .get("https://reqres.in/api/users/2")
                 .then()
                 .statusCode(200)
-                .body("data.id", is(2))
-                .body("data.first_name", is("Janet"))
-                .body("data.last_name", is("Weaver"));
+                .log().all()
+                .extract()
+                .as(PojoNameLastNameResponse.class);
+
+        assertThat(response.getData().getFirst_name()).isEqualTo("Janet");
+        assertThat(response.getData().getLast_name()).isEqualTo("Weaver");
+        assertThat(response.getData().getId()).isEqualTo(2);
+
+
     }
 
     @Test
