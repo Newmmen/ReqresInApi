@@ -17,7 +17,6 @@ public class PojoNameLastNameResponse {
         String first_name,
                 last_name;
 
-
     }
 
 }
