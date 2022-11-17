@@ -9,7 +9,7 @@ import static in.reqres.specs.UserSpecs.*;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ApiTests {
+public class ApiUserTests {
 
     @Test
     public void createUserAndCheckNameAndJob() {
@@ -48,16 +48,6 @@ public class ApiTests {
         assertThat(response.getData().getId()).isEqualTo(2);
     }
 
-    @Test
-    public void check404WrongLink() {
-
-        given()
-                .spec(userSpecRequest)
-                .when()
-                .get("/855")
-                .then()
-                .spec(userSpecResponseWrongLink);
-    }
 
 }
 

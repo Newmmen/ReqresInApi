@@ -5,5 +5,8 @@ import lombok.Data;
 @Data
 public class PojoUserRequest {
     String name,
-            job;
+            job,
+            email,
+            password;
+
 }
