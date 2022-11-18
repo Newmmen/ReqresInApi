@@ -15,7 +15,7 @@ public class ApiAuthorisationTests {
 
 
     @Test
-    public void UndefinedRegisterUser(){
+    public void UndefinedRegisterUser() {
         PojoUserRequest body = new PojoUserRequest();
         body.setEmail(user.getUserUndefinedEmail());
         body.setPassword(user.getUserUndefinedPassword());
@@ -34,7 +34,7 @@ public class ApiAuthorisationTests {
     }
 
     @Test
-    public void RegisterUser(){
+    public void RegisterUser() {
         PojoUserRequest body = new PojoUserRequest();
         body.setEmail(user.getUserEmail());
         body.setPassword(user.getUserPassword());
@@ -54,7 +54,7 @@ public class ApiAuthorisationTests {
     }
 
     @Test
-    public void loginUser(){
+    public void loginUser() {
         PojoUserRequest body = new PojoUserRequest();
         body.setEmail(user.getUserEmail());
         body.setPassword(user.getUserPassword());
@@ -73,8 +73,9 @@ public class ApiAuthorisationTests {
 
 
     }
+
     @Test
-    public void UndefinedloginUser(){
+    public void UndefinedloginUser() {
         PojoUserRequest body = new PojoUserRequest();
         body.setEmail(user.getUserUndefinedEmail());
         body.setPassword(user.getUserUndefinedPassword());

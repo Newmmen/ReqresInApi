@@ -1,11 +1,13 @@
 package in.reqres.config;
+
 import org.aeonbits.owner.Config;
+
 @Config.Sources({
         "classpath:data.properties"
 
 })
 
-public interface DataConfig extends Config{
+public interface DataConfig extends Config {
     @Key("user.email")
     String getUserEmail();
 
@@ -29,8 +31,6 @@ public interface DataConfig extends Config{
 
     @Key("token")
     String getToken();
-
-
 
 
 }
