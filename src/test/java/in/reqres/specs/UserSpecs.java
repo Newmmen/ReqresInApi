@@ -7,25 +7,26 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
+import static in.reqres.helper.CustomApiListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;
 
 public class UserSpecs {
     public static RequestSpecification userSpecRequest = with()
-            .filter(new AllureRestAssured())
+            .filter(withCustomTemplates())
             .baseUri("https://reqres.in")
             .basePath("/api/users")
             .log().all()
             .contentType(ContentType.JSON);
 
     public static RequestSpecification userRegisterRequest = with()
-            .filter(new AllureRestAssured())
+            .filter(withCustomTemplates())
             .baseUri("https://reqres.in")
             .basePath("/api/register")
             .log().all()
             .contentType(ContentType.JSON);
 
     public static RequestSpecification userSpecRequestLogin = with()
-            .filter(new AllureRestAssured())
+            .filter(withCustomTemplates())
             .baseUri("https://reqres.in")
             .basePath("/api/login")
             .log().all()

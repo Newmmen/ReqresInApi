@@ -1,5 +1,6 @@
 package in.reqres;
 
+import in.reqres.helper.UserData;
 import in.reqres.models.pojo.PojoErrorResponse;
 import in.reqres.models.pojo.PojoUserRequest;
 import in.reqres.models.pojo.PojoUserResponse;
@@ -10,12 +11,14 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ApiAuthorisationTests {
+    UserData user = new UserData();
+
 
     @Test
     public void UndefinedRegisterUser(){
         PojoUserRequest body = new PojoUserRequest();
-        body.setEmail("sample@mail.ru");
-        body.setPassword("1234");
+        body.setEmail(user.getUserUndefinedEmail());
+        body.setPassword(user.getUserUndefinedPassword());
         PojoErrorResponse response = given()
                 .spec(userRegisterRequest)
                 .body(body)
@@ -33,8 +36,8 @@ public class ApiAuthorisationTests {
     @Test
     public void RegisterUser(){
         PojoUserRequest body = new PojoUserRequest();
-        body.setEmail("eve.holt@reqres.in");
-        body.setPassword("pistol");
+        body.setEmail(user.getUserEmail());
+        body.setPassword(user.getUserPassword());
         PojoUserResponse response = given()
                 .spec(userRegisterRequest)
                 .body(body)
@@ -45,7 +48,7 @@ public class ApiAuthorisationTests {
                 .extract()
                 .as(PojoUserResponse.class);
 
-        assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
+        assertThat(response.getToken()).isEqualTo(user.getToken()); //"QpwL5tke4Pnpja7X4"
         assertThat(response.getId()).isEqualTo("4");
 
     }
@@ -53,8 +56,8 @@ public class ApiAuthorisationTests {
     @Test
     public void loginUser(){
         PojoUserRequest body = new PojoUserRequest();
-        body.setEmail("eve.holt@reqres.in");
-        body.setPassword("pistol");
+        body.setEmail(user.getUserEmail());
+        body.setPassword(user.getUserPassword());
 
         PojoUserResponse response = given()
                 .spec(userSpecRequestLogin)
@@ -66,15 +69,15 @@ public class ApiAuthorisationTests {
                 .extract()
                 .as(PojoUserResponse.class);
 
-        assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
+        assertThat(response.getToken()).isEqualTo(user.getToken());
 
 
     }
     @Test
     public void UndefinedloginUser(){
         PojoUserRequest body = new PojoUserRequest();
-        body.setEmail("eve.lt@reqres.in");
-        body.setPassword("pistl");
+        body.setEmail(user.getUserUndefinedEmail());
+        body.setPassword(user.getUserUndefinedPassword());
 
         PojoErrorResponse response = given()
                 .spec(userSpecRequestLogin)

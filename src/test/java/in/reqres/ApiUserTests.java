@@ -1,5 +1,6 @@
 package in.reqres;
 
+import in.reqres.helper.UserData;
 import in.reqres.models.pojo.PojoNameLastNameResponse;
 import in.reqres.models.pojo.PojoUserRequest;
 import in.reqres.models.pojo.PojoUserResponse;
@@ -10,13 +11,15 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ApiUserTests {
+    UserData user = new UserData();
 
     @Test
     public void createUserAndCheckNameAndJob() {
 
+
         PojoUserRequest body = new PojoUserRequest();
-        body.setName("John");
-        body.setJob("QA");
+        body.setName(user.getUserFirstName());
+        body.setJob(user.getUserJob());
         PojoUserResponse response = given()
                 .spec(userSpecRequest)
                 .body(body)
@@ -43,8 +46,8 @@ public class ApiUserTests {
                 .extract()
                 .as(PojoNameLastNameResponse.class);
 
-        assertThat(response.getData().getFirst_name()).isEqualTo("Janet");
-        assertThat(response.getData().getLast_name()).isEqualTo("Weaver");
+        assertThat(response.getData().getFirst_name()).isEqualTo(user.getUserFirstName());
+        assertThat(response.getData().getLast_name()).isEqualTo(user.getUserLastName());
         assertThat(response.getData().getId()).isEqualTo(2);
     }
 

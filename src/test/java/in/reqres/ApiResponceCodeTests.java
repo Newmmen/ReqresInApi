@@ -1,5 +1,6 @@
 package in.reqres;
 
+import in.reqres.helper.UserData;
 import in.reqres.models.pojo.PojoUserRequest;
 import org.junit.jupiter.api.Test;
 
@@ -7,6 +8,7 @@ import static in.reqres.specs.UserSpecs.*;
 import static io.restassured.RestAssured.given;
 
 public class ApiResponceCodeTests {
+    UserData user = new UserData();
 
     @Test
     public void check404WrongLink() {
@@ -22,7 +24,7 @@ public class ApiResponceCodeTests {
     @Test
     public void check400WrongBody() {
         PojoUserRequest body = new PojoUserRequest();
-        body.setEmail("misspass@gmail.com");
+        body.setEmail(user.getUserEmail());
 
         given()
                 .spec(userSpecRequestLogin)
