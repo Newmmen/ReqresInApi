@@ -4,6 +4,7 @@ import in.reqres.helper.UserData;
 import in.reqres.models.pojo.PojoNameLastNameResponse;
 import in.reqres.models.pojo.PojoUserRequest;
 import in.reqres.models.pojo.PojoUserResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static in.reqres.specs.UserSpecs.*;
@@ -14,8 +15,8 @@ public class ApiUserTests {
     UserData user = new UserData();
 
     @Test
+    @DisplayName("Check creating user")
     public void createUserAndCheckNameAndJob() {
-
 
         PojoUserRequest body = new PojoUserRequest();
         body.setName(user.getUserFirstName());
@@ -34,6 +35,7 @@ public class ApiUserTests {
         assertThat(response.getJob()).isEqualTo(body.getJob());
     }
 
+    @DisplayName("Check creating user with lastname and firstname")
     @Test
     public void checkUserLastNameAndFirstNameAndId() {
 

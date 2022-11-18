@@ -2,6 +2,7 @@ package in.reqres;
 
 import in.reqres.helper.UserData;
 import in.reqres.models.pojo.PojoUserRequest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static in.reqres.specs.UserSpecs.*;
@@ -10,6 +11,7 @@ import static io.restassured.RestAssured.given;
 public class ApiResponceCodeTests {
     UserData user = new UserData();
 
+    @DisplayName("Checking 404 response code")
     @Test
     public void check404WrongLink() {
 
@@ -21,6 +23,7 @@ public class ApiResponceCodeTests {
                 .spec(userSpecResponseWrongLink);
     }
 
+    @DisplayName("Checking 400 response code")
     @Test
     public void check400WrongBody() {
         PojoUserRequest body = new PojoUserRequest();
@@ -35,6 +38,7 @@ public class ApiResponceCodeTests {
                 .spec(userSpecResponseWrongBody);
     }
 
+    @DisplayName("Checking 204 response code")
     @Test
     public void check204WrongBody() {
 

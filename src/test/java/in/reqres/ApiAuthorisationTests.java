@@ -4,6 +4,7 @@ import in.reqres.helper.UserData;
 import in.reqres.models.pojo.PojoErrorResponse;
 import in.reqres.models.pojo.PojoUserRequest;
 import in.reqres.models.pojo.PojoUserResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static in.reqres.specs.UserSpecs.*;
@@ -14,6 +15,7 @@ public class ApiAuthorisationTests {
     UserData user = new UserData();
 
 
+    @DisplayName("Check register with undefined user")
     @Test
     public void UndefinedRegisterUser() {
         PojoUserRequest body = new PojoUserRequest();
@@ -33,6 +35,7 @@ public class ApiAuthorisationTests {
 
     }
 
+    @DisplayName("Check register user")
     @Test
     public void RegisterUser() {
         PojoUserRequest body = new PojoUserRequest();
@@ -54,6 +57,7 @@ public class ApiAuthorisationTests {
     }
 
     @Test
+    @DisplayName("Check login user")
     public void loginUser() {
         PojoUserRequest body = new PojoUserRequest();
         body.setEmail(user.getUserEmail());
@@ -74,6 +78,7 @@ public class ApiAuthorisationTests {
 
     }
 
+    @DisplayName("Check login with undefined user")
     @Test
     public void UndefinedloginUser() {
         PojoUserRequest body = new PojoUserRequest();
