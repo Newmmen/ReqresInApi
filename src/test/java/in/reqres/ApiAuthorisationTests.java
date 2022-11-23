@@ -35,6 +35,8 @@ public class ApiAuthorisationTests {
 
     }
 
+
+
     @DisplayName("Check register user")
     @Test
     public void RegisterUser() {
@@ -51,7 +53,7 @@ public class ApiAuthorisationTests {
                 .extract()
                 .as(PojoUserResponse.class);
 
-        assertThat(response.getToken()).isEqualTo(user.getToken()); //"QpwL5tke4Pnpja7X4"
+        assertThat(response.getToken()).isEqualTo(user.getToken());
         assertThat(response.getId()).isEqualTo("4");
 
     }
