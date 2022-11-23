@@ -17,6 +17,13 @@ public class UserSpecs {
             .log().all()
             .contentType(ContentType.JSON);
 
+    public static RequestSpecification userSpecRequestUnknown = with()
+            .filter(withCustomTemplates())
+            .baseUri("https://reqres.in")
+            .basePath("/api/unknown")
+            .log().all()
+            .contentType(ContentType.JSON);
+
     public static RequestSpecification userRegisterRequest = with()
             .filter(withCustomTemplates())
             .baseUri("https://reqres.in")
@@ -59,5 +66,6 @@ public class UserSpecs {
             .log(LogDetail.STATUS)
             .log(LogDetail.BODY)
             .build();
+
 
 }
