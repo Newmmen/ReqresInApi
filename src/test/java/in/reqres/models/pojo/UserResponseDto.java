@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PojoUserResponse {
+public class UserResponseDto {
     String name,
             job,
             token,

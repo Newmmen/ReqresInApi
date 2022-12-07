@@ -1,16 +1,19 @@
 package in.reqres;
 
 import in.reqres.helper.UserData;
-import in.reqres.models.pojo.PojoNameLastNameResponse;
-import in.reqres.models.pojo.PojoUserRequest;
-import in.reqres.models.pojo.PojoUserResponse;
+import in.reqres.models.pojo.UserDataResponseDto;
+import in.reqres.models.pojo.UserRequestDto;
+import in.reqres.models.pojo.UserResponseDto;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static in.reqres.specs.UserSpecs.*;
+import static in.reqres.specs.UserSpecs.basicRequestSpec;
+import static in.reqres.specs.UserSpecs.basicResponseSpec;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("Api")
 public class ApiUserTests {
     UserData user = new UserData();
 
@@ -18,18 +21,19 @@ public class ApiUserTests {
     @DisplayName("Check creating user")
     public void createUserAndCheckNameAndJob() {
 
-        PojoUserRequest body = new PojoUserRequest();
+        UserRequestDto body = new UserRequestDto();
         body.setName(user.getUserFirstName());
         body.setJob(user.getUserJob());
-        PojoUserResponse response = given()
-                .spec(userSpecRequest)
+        UserResponseDto response = given()
+                .spec(basicRequestSpec)
                 .body(body)
                 .when()
-                .post()
+                .post("/api/users")
                 .then()
-                .spec(userSpecResponseCreate)
+                .spec(basicResponseSpec)
+                .statusCode(201)
                 .extract()
-                .as(PojoUserResponse.class);
+                .as(UserResponseDto.class);
 
         assertThat(response.getName()).isEqualTo(body.getName());
         assertThat(response.getJob()).isEqualTo(body.getJob());
@@ -39,18 +43,19 @@ public class ApiUserTests {
     @Test
     public void checkUserLastNameAndFirstNameAndId() {
 
-        PojoNameLastNameResponse response = given()
-                .spec(userSpecRequest)
+        UserDataResponseDto response = given()
+                .spec(basicRequestSpec)
                 .when()
-                .get("/2")
+                .get("/api/users/2")
                 .then()
-                .spec(userSpecResponseCheck)
+                .spec(basicResponseSpec)
+                .statusCode(200)
                 .extract()
-                .as(PojoNameLastNameResponse.class);
+                .as(UserDataResponseDto.class);
 
-        assertThat(response.getData().getFirst_name()).isEqualTo(user.getUserFirstName());
-        assertThat(response.getData().getLast_name()).isEqualTo(user.getUserLastName());
-        assertThat(response.getData().getId()).isEqualTo(2);
+        assertThat(response.getData().getFirstName()).isEqualTo(user.getUserFirstName());
+        assertThat(response.getData().getLastName()).isEqualTo(user.getUserLastName());
+        assertThat(response.getData().getId()).isNotNull();
     }
 
 
