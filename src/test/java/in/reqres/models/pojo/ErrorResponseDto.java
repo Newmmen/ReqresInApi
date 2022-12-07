@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PojoErrorResponse {
+public class ErrorResponseDto {
     private String error;
 
 }

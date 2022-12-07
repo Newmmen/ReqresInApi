@@ -1,13 +1,16 @@
 package in.reqres;
 
 import in.reqres.helper.UserData;
-import in.reqres.models.pojo.PojoUserRequest;
+import in.reqres.models.pojo.UserRequestDto;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static in.reqres.specs.UserSpecs.*;
+import static in.reqres.specs.UserSpecs.basicRequestSpec;
+import static in.reqres.specs.UserSpecs.basicResponseSpec;
 import static io.restassured.RestAssured.given;
 
+@Tag("Api")
 public class ApiResponceCodeTests {
     UserData user = new UserData();
 
@@ -16,26 +19,28 @@ public class ApiResponceCodeTests {
     public void check404WrongLink() {
 
         given()
-                .spec(userRegisterRequest)
+                .spec(basicRequestSpec)
                 .when()
-                .get("/855")
+                .get("/api/users/855")
                 .then()
-                .spec(userSpecResponseWrongLink);
+                .spec(basicResponseSpec)
+                .statusCode(404);
     }
 
     @DisplayName("Checking 400 response code")
     @Test
     public void check400WrongBody() {
-        PojoUserRequest body = new PojoUserRequest();
+        UserRequestDto body = new UserRequestDto();
         body.setEmail(user.getUserEmail());
 
         given()
-                .spec(userSpecRequestLogin)
+                .spec(basicRequestSpec)
                 .body(body)
                 .when()
-                .post()
+                .post("/api/login")
                 .then()
-                .spec(userSpecResponseWrongBody);
+                .spec(basicResponseSpec)
+                .statusCode(400);
     }
 
     @DisplayName("Checking 204 response code")
@@ -43,11 +48,12 @@ public class ApiResponceCodeTests {
     public void check204WrongBody() {
 
         given()
-                .spec(userSpecRequest)
+                .spec(basicRequestSpec)
                 .when()
-                .delete()
+                .delete("/api/users")
                 .then()
-                .spec(userSpecResponseNoContent);
+                .spec(basicResponseSpec)
+                .statusCode(204);
     }
 
 }

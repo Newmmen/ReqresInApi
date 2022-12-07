@@ -1,101 +1,107 @@
 package in.reqres;
 
 import in.reqres.helper.UserData;
-import in.reqres.models.pojo.PojoErrorResponse;
-import in.reqres.models.pojo.PojoUserRequest;
-import in.reqres.models.pojo.PojoUserResponse;
+import in.reqres.models.pojo.ErrorResponseDto;
+import in.reqres.models.pojo.UserRequestDto;
+import in.reqres.models.pojo.UserResponseDto;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static in.reqres.specs.UserSpecs.*;
+import static in.reqres.specs.UserSpecs.basicRequestSpec;
+import static in.reqres.specs.UserSpecs.basicResponseSpec;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("Api")
 public class ApiAuthorisationTests {
     UserData user = new UserData();
 
 
     @DisplayName("Check register with undefined user")
     @Test
-    public void UndefinedRegisterUser() {
-        PojoUserRequest body = new PojoUserRequest();
+    public void undefinedRegisterUser() {
+        UserRequestDto body = new UserRequestDto();
         body.setEmail(user.getUserUndefinedEmail());
         body.setPassword(user.getUserUndefinedPassword());
-        PojoErrorResponse response = given()
-                .spec(userRegisterRequest)
+        ErrorResponseDto response = given()
+                .spec(basicRequestSpec)
                 .body(body)
                 .when()
-                .post()
+                .post("/api/register")
                 .then()
-                .spec(userSpecResponseWrongBody)
+                .spec(basicResponseSpec)
+                .statusCode(400)
                 .extract()
-                .as(PojoErrorResponse.class);
+                .as(ErrorResponseDto.class);
 
         assertThat(response.getError()).isEqualTo("Note: Only defined users succeed registration");
 
     }
 
 
-
     @DisplayName("Check register user")
     @Test
-    public void RegisterUser() {
-        PojoUserRequest body = new PojoUserRequest();
+    public void registerUser() {
+        UserRequestDto body = new UserRequestDto();
         body.setEmail(user.getUserEmail());
         body.setPassword(user.getUserPassword());
-        PojoUserResponse response = given()
-                .spec(userRegisterRequest)
+        UserResponseDto response = given()
+                .spec(basicRequestSpec)
                 .body(body)
                 .when()
-                .post()
+                .post("/api/register")
                 .then()
-                .spec(userSpecResponseCheck)
+                .spec(basicResponseSpec)
+                .statusCode(200)
                 .extract()
-                .as(PojoUserResponse.class);
+                .as(UserResponseDto.class);
 
-        assertThat(response.getToken()).isEqualTo(user.getToken());
-        assertThat(response.getId()).isEqualTo("4");
+        assertThat(response.getToken()).isNotNull();
+        assertThat(response.getId()).isNotNull();
 
     }
 
     @Test
     @DisplayName("Check login user")
     public void loginUser() {
-        PojoUserRequest body = new PojoUserRequest();
+        UserRequestDto body = new UserRequestDto();
         body.setEmail(user.getUserEmail());
         body.setPassword(user.getUserPassword());
 
-        PojoUserResponse response = given()
-                .spec(userSpecRequestLogin)
+        UserResponseDto response = given()
+                .spec(basicRequestSpec)
                 .when()
                 .body(body)
-                .post()
+                .post("/api/login")
                 .then()
-                .spec(userSpecResponseCheck)
+                .spec(basicResponseSpec)
+                .statusCode(200)
                 .extract()
-                .as(PojoUserResponse.class);
+                .as(UserResponseDto.class);
 
-        assertThat(response.getToken()).isEqualTo(user.getToken());
+        assertThat(response.getToken()).isNotNull();
 
 
     }
 
     @DisplayName("Check login with undefined user")
     @Test
-    public void UndefinedloginUser() {
-        PojoUserRequest body = new PojoUserRequest();
+    public void undefinedloginUser() {
+        UserRequestDto body = new UserRequestDto();
         body.setEmail(user.getUserUndefinedEmail());
         body.setPassword(user.getUserUndefinedPassword());
 
-        PojoErrorResponse response = given()
-                .spec(userSpecRequestLogin)
+        ErrorResponseDto response = given()
+                .spec(basicRequestSpec)
                 .when()
                 .body(body)
-                .post()
+                .post("/api/login")
                 .then()
-                .spec(userSpecResponseWrongBody)
+                .spec(basicResponseSpec)
+                .statusCode(400)
                 .extract()
-                .as(PojoErrorResponse.class);
+                .as(ErrorResponseDto.class);
 
         assertThat(response.getError()).isEqualTo("user not found");
 
